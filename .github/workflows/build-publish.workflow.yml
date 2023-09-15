@@ -7,12 +7,15 @@ on:
     tags:
       - "*"
 
+env:
+  VERSION: ${{ github.ref_name }}
+  REGISTRY: docker.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   build:
     name: Build & push image
     runs-on: ubuntu-latest
-    env:
-      VERSION: ${{ github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -20,6 +23,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
+          registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -28,4 +32,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.VERSION }}
+          tags: ${{ env.IMAGE_NAME }}:${{ env.VERSION }}

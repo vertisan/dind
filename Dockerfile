@@ -1,6 +1,13 @@
-FROM docker:23.0.6-dind-alpine3.18
+ARG DOCKER_VERSION=24.0.5
+ARG ALPINE_VERSION=3.18
 
-ENV VAULT_VERSION 1.14.0
+FROM docker:${DOCKER_VERSION}-dind-alpine${ALPINE_VERSION}
+
+ARG VAULT_VERSION=1.14.3
+ARG LEDO_VERSION=1.4.7
+
+ENV VAULT_VERSION ${VAULT_VERSION}
+ENV LEDO_VERSION ${LEDO_VERSION}
 
 
 ## Install some bases packages
@@ -15,7 +22,11 @@ RUN wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VER
 
 
 ## Install LeadDocker
-RUN curl -sL https://raw.githubusercontent.com/paramah/ledo/master/install.sh | sudo sh
+# RUN curl -sL https://raw.githubusercontent.com/paramah/ledo/master/install.sh | sudo sh
+RUN wget https://github.com/paramah/ledo/releases/download/v${LEDO_VERSION}/ledo_${LEDO_VERSION}_linux_amd64.tar.gz \
+  && tar -zxvf ledo_${LEDO_VERSION}_linux_amd64.tar.gz \
+  && chmod a+x ledo \
+  && mv ledo /usr/local/bin
 
 
 ## Install some extra packages

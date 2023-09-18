@@ -4,14 +4,16 @@ ARG ALPINE_VERSION=3.18
 FROM docker:${DOCKER_VERSION}-dind-alpine${ALPINE_VERSION}
 
 ARG VAULT_VERSION=1.14.3
-ARG LEDO_VERSION=1.4.7
+ARG LEDO_VERSION=1.5.0
 
 ENV VAULT_VERSION ${VAULT_VERSION}
 ENV LEDO_VERSION ${LEDO_VERSION}
 
 
 ## Install some bases packages
-RUN apk add gcc python3 python3-dev py3-pip libffi-dev musl-dev openssl-dev curl make rust cargo git jq sudo --no-cache
+RUN apk update \
+  && apk upgrade --no-cache \
+  && apk add --no-cache --upgrade python3 openssl-dev curl make git jq sudo py3-pip
 
 
 ## Install the Vault client
@@ -22,13 +24,9 @@ RUN wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VER
 
 
 ## Install LeadDocker
-# RUN curl -sL https://raw.githubusercontent.com/paramah/ledo/master/install.sh | sudo sh
-RUN wget https://github.com/paramah/ledo/releases/download/v${LEDO_VERSION}/ledo_${LEDO_VERSION}_linux_amd64.tar.gz \
-  && tar -zxvf ledo_${LEDO_VERSION}_linux_amd64.tar.gz \
-  && chmod a+x ledo \
-  && mv ledo /usr/local/bin
+RUN curl -sL https://raw.githubusercontent.com/paramah/ledo/master/install.sh | sudo sh
 
 
 ## Install some extra packages
-RUN pip3 install --upgrade pip \
-  && pip3 install awscli requests markupsafe~=2.0.0
+RUN pip install --no-cache-dir --upgrade pip \
+  && pip install --no-cache-dir awscli requests markupsafe~=2.0.0

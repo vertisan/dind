@@ -10,7 +10,7 @@ ENV LEDO_VERSION ${LEDO_VERSION}
 ## Install some bases packages
 RUN apk update \
   && apk upgrade --no-cache \
-  && apk add --no-cache --upgrade openssl curl make git jq sudo aws-cli vault
+  && apk add --no-cache --upgrade bash openssl curl make git jq sudo aws-cli vault
 
 
 ## Install LeadDocker

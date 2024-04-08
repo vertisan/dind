@@ -1,8 +1,8 @@
 # Docker-in-Docker
 
-## Version 24.0
+## Version 26.0
 
-### Based on Alpine 3.18
+### Based on Alpine 3.19
 
 ### Dependencies
 
